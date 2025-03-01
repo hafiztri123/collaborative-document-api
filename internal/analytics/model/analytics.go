@@ -39,8 +39,8 @@ func (de *DocumentEdit) BeforeCreate(tx *gorm.DB) error {
 }
 
 type DocumentViewsResponse struct {
-	Total       int `json:"total"`
-	UniqueUsers int `json:"unique_users"`
+	Total       int64 `json:"total"`
+	UniqueUsers int64 `json:"unique_users"`
 	Timeline    []struct {
 		Date  string `json:"date"`
 		Count int    `json:"count"`
@@ -48,7 +48,7 @@ type DocumentViewsResponse struct {
 }
 
 type DocumentEditsResponse struct {
-	Total   int `json:"total"`
+	Total   int64 `json:"total"`
 	ByUsers []struct {
 		UserID   uuid.UUID `json:"user_id"`
 		UserName string    `json:"user_name"`
@@ -76,8 +76,8 @@ type UserAnalyticsDocumentResponse struct {
 
 // UserActivityResponse represents user activity for analytics
 type UserActivityResponse struct {
-	Views    int `json:"views"`
-	Edits    int `json:"edits"`
+	Views    int64 `json:"views"`
+	Edits    int64 `json:"edits"`
 	Timeline []struct {
 		Date  string `json:"date"`
 		Views int    `json:"views"`
