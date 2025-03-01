@@ -16,7 +16,7 @@ import (
 	"go.uber.org/zap"
 )
 
-
+//to determine status code to send
 var (
 	ErrInvalidCredentials = errors.New("invalid credentials")
 	ErrUserExists         = errors.New("user already exists")
@@ -32,9 +32,10 @@ type Service interface {
 }
 
 type Claims struct {
+	//Custom field 
 	UserID uuid.UUID `json:"user_id"`
 	Email  string    `json:"email"`
-	jwt.RegisteredClaims
+	jwt.RegisteredClaims //Best practice of JWT
 }
 
 type authService struct {
@@ -94,6 +95,7 @@ func (s *authService) Login(ctx context.Context, login model.UserLogin) (*model.
 		return nil, err
 	}
 
+	//Email is not registered to particular user
 	if user == nil {
 		return nil, ErrInvalidCredentials
 	}
@@ -120,6 +122,7 @@ func (s *authService) RefreshToken(ctx context.Context, refreshToken string) (*m
 		return nil, ErrInvalidToken
 	}
 
+	//see if refresh token still active in the redis
 	key := fmt.Sprintf("refresh_token:%s", refreshToken)
 	exists, err := s.redis.Exists(ctx, key).Result()
 	if err != nil {
@@ -140,6 +143,7 @@ func (s *authService) RefreshToken(ctx context.Context, refreshToken string) (*m
 		return nil, ErrInvalidToken
 	}
 
+	// avoid multiple active refresh token
 	if err := s.redis.Del(ctx, key).Err(); err != nil {
 		s.logger.Error("[ERROR] error deleting fresh token", zap.Error(err))
 		return nil, err
@@ -184,6 +188,7 @@ func (s *authService) ValidateToken(tokenString string) (*Claims, error){
 		return nil, ErrInvalidToken
 	}
 
+	//* To fill gin context with claims.userID and claims.email
 	return claims, nil
 
 }
@@ -239,6 +244,7 @@ func (s *authService) generateTokens(ctx context.Context, user *model.User) (*mo
 		return nil, err
 	}
 
+	//to keep track of active refresh token with redis
 	key := fmt.Sprintf("refresh_token:%s", refreshTokenString)
 	if err := s.redis.Set(ctx, key, user.ID.String(),refreshExpiry).Err(); err != nil {
 		s.logger.Error("[ERROR] error storing refresh token in redis", zap.Error(err))
