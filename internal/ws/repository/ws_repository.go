@@ -5,9 +5,9 @@ import (
 	"sync"
 
 	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
 	"github.com/hafiztri123/document-api/internal/ws/model"
 	"go.uber.org/zap"
-	"golang.org/x/net/websocket"
 )
 
 type Client struct {
