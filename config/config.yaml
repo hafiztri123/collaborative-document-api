@@ -29,7 +29,7 @@ redis:
 jwt:
   secret: e#l,8"M5KRTyqJ-LG2"h.0t.|)|I40o,L(h!WC5L.9)Lh-GTK@.A+,4?J(][}X:jl.?eco'q}--=|ta'BUjZ("="kjG,Z|+@#'!j;BK69yMP5mU)];mA!4WLRD+2Q.PK2Q'U+f-M.Z2dD3:}"\Qb[G12u;=.#pR'sLC-|a+LC|XiX(.xyUkX.dgdT[Rex?"[Aql1Exws9+]UqH6\Y67."pW6fWC,cG.YkeulYgAot:z)yi73z4tevwE:h@qy|
   access_token_expiry: 15m
-  refresh_token_expiry: 7d
+  refresh_token_expiry: 168h
 
 logging:
   level: debug # debug, info, warn, error

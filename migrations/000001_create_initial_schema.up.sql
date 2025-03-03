@@ -26,7 +26,7 @@ CREATE TABLE documents (
 );
 
 -- Create document_history table
-CREATE TABLE document_history (
+CREATE TABLE document_histories (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     document_id UUID NOT NULL REFERENCES documents(id),
     version INTEGER NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE document_edits (
 CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_documents_owner_id ON documents(owner_id);
 CREATE INDEX idx_documents_deleted_at ON documents(deleted_at);
-CREATE INDEX idx_document_history_document_id ON document_history(document_id);
+CREATE INDEX idx_document_history_document_id ON document_histories(document_id);
 CREATE INDEX idx_collaborators_document_id ON collaborators(document_id);
 CREATE INDEX idx_collaborators_user_id ON collaborators(user_id);
 CREATE INDEX idx_document_views_document_id ON document_views(document_id);

@@ -40,7 +40,7 @@ CREATE INDEX IF NOT EXISTS idx_documents_updated_at ON documents(updated_at);
 CREATE INDEX IF NOT EXISTS idx_documents_is_public ON documents(is_public);
 
 -- Create document_history table
-CREATE TABLE IF NOT EXISTS document_history (
+CREATE TABLE IF NOT EXISTS document_histories (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     document_id UUID NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
     version INTEGER NOT NULL,
@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS document_history (
 );
 
 -- Create indexes for document_history
-CREATE INDEX IF NOT EXISTS idx_document_history_document_id ON document_history(document_id);
-CREATE INDEX IF NOT EXISTS idx_document_history_updated_by_id ON document_history(updated_by_id);
-CREATE INDEX IF NOT EXISTS idx_document_history_updated_at ON document_history(updated_at);
+CREATE INDEX IF NOT EXISTS idx_document_history_document_id ON document_histories(document_id);
+CREATE INDEX IF NOT EXISTS idx_document_history_updated_by_id ON document_histories(updated_by_id);
+CREATE INDEX IF NOT EXISTS idx_document_history_updated_at ON document_histories(updated_at);
 
 -- Create collaborators table
 CREATE TABLE IF NOT EXISTS collaborators (

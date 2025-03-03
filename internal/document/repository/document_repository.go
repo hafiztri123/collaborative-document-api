@@ -190,7 +190,7 @@ func (r *documentRepository)	GetDocumentHistory(ctx context.Context, documentID 
 		Order("version DESC").
 		Limit(perPage).
 		Offset(offset).
-		Preload("Updatedby").
+		Preload("UpdatedBy").
 		Find(&historyDocuments).
 		Error
 	
@@ -233,7 +233,7 @@ func (r *documentRepository)	UpdateCollaborator(ctx context.Context, collaborato
 	return nil
 }
 func (r *documentRepository)	RemoveCollaborator(ctx context.Context, documentID, userID uuid.UUID) error{
-	err := r.db.WithContext(ctx).Where("document_id ? AND user_id = ?", documentID, userID).Delete(&model.Collaborator{}).Error
+	err := r.db.WithContext(ctx).Where("document_id = ? AND user_id = ?", documentID, userID).Delete(&model.Collaborator{}).Error
 	if err != nil {
 		r.logger.Error("Failed to remove collaborator", zap.Error(err))
 		return err

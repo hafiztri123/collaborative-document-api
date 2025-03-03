@@ -3,7 +3,7 @@ package api
 import (
 	"github.com/gin-gonic/gin"
 	analyticsRepo "github.com/hafiztri123/document-api/internal/analytics/repository"
-	analyticsService "github.com/hafiztri123/document-api/internal/analytics/service"
+	// analyticsService "github.com/hafiztri123/document-api/internal/analytics/service"
 	authController "github.com/hafiztri123/document-api/internal/auth/controller"
 	authRepository "github.com/hafiztri123/document-api/internal/auth/repository"
 	authService "github.com/hafiztri123/document-api/internal/auth/service"
@@ -40,7 +40,7 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB, redisClient *redis.Client, log
 
 	// Services
 	authSvc := authService.NewAuthService(authRepo, redisClient, logger)
-	analyticsService := analyticsService.NewAnalyticsService(analyticsRepo, logger)
+	// analyticsService := analyticsService.NewAnalyticsService(analyticsRepo, logger)
 	docSvc := docService.NewDocumentService(docRepo, authRepo, analyticsRepo, logger)
 	wsSvc := wsService.NewWSService(wsRepo, docRepo, logger)
 

@@ -175,11 +175,11 @@ func(s *documentService)	UpdateDocument(ctx context.Context, id uuid.UUID, userI
 		document.Title = *req.Title
 	}
 
-	var oldContent string
+	// var oldContent string
 	var contentUpdated bool
 
 	if req.Content != nil && *req.Content != document.Content {
-		oldContent = document.Content
+		// oldContent = document.Content
 		document.Content = *req.Content
 		contentUpdated = true
 	}
