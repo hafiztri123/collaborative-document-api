@@ -66,7 +66,7 @@ func (s *wsService)	HandleConnection(conn *websocket.Conn, userID uuid.UUID, use
 		zap.String("userName", userName))
 	
 	go s.readPump(client)
-	go s.writePummp(client)
+	go s.writePump(client)
 
 }
 
@@ -88,9 +88,7 @@ func (s *wsService) readPump(client *wsRepo.Client) {
 	for {
 		_, message, err := client.Conn.ReadMessage()
 		if err != nil {
-			if websocket.IsUnexpectedCloseError(err, 
-				websocket.CloseGoingAway, 
-				websocket.CloseAbnormalClosure) {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
 				s.logger.Error("WebSocket error", zap.Error(err))
 			}
 			break
@@ -120,7 +118,7 @@ func (s *wsService) readPump(client *wsRepo.Client) {
 	}
 }
 
-func (s *wsService) writePummp(client *wsRepo.Client) {
+func (s *wsService) writePump(client *wsRepo.Client) {
 	ticker := time.NewTicker(45 *time.Second)
 	defer func ()  {
 		ticker.Stop()

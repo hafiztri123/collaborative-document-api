@@ -74,8 +74,7 @@ func (r *documentRepository)	GetDocumentsByUserID(ctx context.Context, userID uu
 
 	db := r.db.WithContext(ctx).Model(&model.Document{})
 
-	//So it search both for documents that user owned and user collaborated but not necessarily own
-	db = db.Where("owner_id", userID).
+	db = db.Where("owner_id = ?", userID).
 		Or(
 			"id IN (?)", 
 			r.db.Model(&model.Collaborator{}).
@@ -127,7 +126,11 @@ func (r *documentRepository)	GetDocumentsByUserID(ctx context.Context, userID uu
 
 	offset := (page - 1) * perPage
 
-	if err := db.Order(order).Limit(perPage).Offset(offset).Preload("Collaborators").Find(&documents).Error; err != nil {
+	if err := db.Order(order).
+		Limit(perPage).
+		Offset(offset).
+		Preload("Collaborators").
+		Find(&documents).Error; err != nil {
 		r.logger.Error("Failed to get documents by User ID", zap.Error(err))
 		return nil, 0, err
 	}
@@ -144,7 +147,7 @@ func (r *documentRepository)	UpdateDocument(ctx context.Context, document *model
 	return nil
 }
 func (r *documentRepository)	DeleteDocument(ctx context.Context, id uuid.UUID) error{
-	err := r.db.WithContext(ctx).Delete(&model.Document{}, id).Error
+	err := r.db.WithContext(ctx).Delete(&model.Document{}, id).Error 
 	if err != nil {
 		r.logger.Error("Failed to delete document", zap.Error(err))
 		return err
@@ -270,7 +273,6 @@ func (r *documentRepository)	GetCollaborator(ctx context.Context, documentID, us
 }
 
 func (r *documentRepository) CanUserAccess(ctx context.Context, documentID, userID uuid.UUID, requiredPermission model.Permission) (bool, error) {
-	//check ownership by count document with id and user id
 	var count int64
 	err := r.db.WithContext(ctx).Model(&model.Document{}).Where("id = ? AND owner_id = ?", documentID, userID).Count(&count).Error
 	if err != nil {

@@ -42,7 +42,7 @@ func NewAnalyticsRepository (db *gorm.DB, logger *zap.Logger) Repository {
 
 	// Document view tracking
 func (r *analyticsRepository) RecordDocumentView(ctx context.Context, documentID, userID uuid.UUID, ipAddress, userAgent string) error {
-	view := model.DocumentView{
+	view := model.DocumentView {
 		DocumentID: documentID,
 		UserID: userID,
 		IPAddress: ipAddress,
@@ -261,13 +261,20 @@ func (r *analyticsRepository)	GetUserDocumentsAnalytics(ctx context.Context, use
 	response := &model.UserDocumentsResponse{}
 
 	var docsCreated int64
-	if err := r.db.WithContext(ctx).Model(&documentModel.Document{}).Where("owner_id = ?", userID).Count(&docsCreated).Error; err != nil {
+	if err := r.db.WithContext(ctx).
+		Model(&documentModel.Document{}).
+		Where("owner_id = ?", userID).
+		Count(&docsCreated).Error; err != nil {
 		r.logger.Error("Failed to count user created documents", zap.Error(err))
 		return nil, err
 	}
 
 	var docsCollaborated int64
-	if err := r.db.WithContext(ctx).Model(&documentModel.Collaborator{}).Where("user_id = ?", userID).Distinct("document_id").Count(&docsCollaborated).Error; err != nil {
+	if err := r.db.WithContext(ctx).
+		Model(&documentModel.Collaborator{}).
+		Where("user_id = ?", userID).
+		Distinct("document_id").
+		Count(&docsCollaborated).Error; err != nil {
 		r.logger.Error("Failed to count user collaborated documents", zap.Error(err))
 		return nil, err
 	}

@@ -16,7 +16,6 @@ import (
 	"go.uber.org/zap"
 )
 
-//to determine status code to send
 var (
 	ErrInvalidCredentials = errors.New("invalid credentials")
 	ErrUserExists         = errors.New("user already exists")
@@ -32,7 +31,6 @@ type Service interface {
 }
 
 type Claims struct {
-	//Custom field 
 	UserID uuid.UUID `json:"user_id"`
 	Email  string    `json:"email"`
 	jwt.RegisteredClaims //Best practice of JWT

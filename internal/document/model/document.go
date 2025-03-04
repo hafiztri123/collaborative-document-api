@@ -10,18 +10,18 @@ import (
 
 // Document represents a document in the system
 type Document struct {
-	ID           uuid.UUID      `gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
-	Title        string         `gorm:"type:varchar(255);not null" json:"title"`
-	Content      string         `gorm:"type:text" json:"content"`
-	Version      int            `gorm:"not null;default:1" json:"version"`
-	IsPublic     bool           `gorm:"not null;default:false" json:"is_public"`
-	OwnerID      uuid.UUID      `gorm:"type:uuid;not null" json:"owner_id"`
-	Owner        userModel.User `gorm:"foreignKey:OwnerID" json:"-"`
-	CreatedAt    time.Time      `gorm:"not null" json:"created_at"`
-	UpdatedAt    time.Time      `gorm:"not null" json:"updated_at"`
-	DeletedAt    gorm.DeletedAt `gorm:"index" json:"-"` // Soft delete
-	Collaborators []Collaborator `gorm:"foreignKey:DocumentID" json:"collaborators,omitempty"`
-	History      []DocumentHistory `gorm:"foreignKey:DocumentID" json:"-"`
+	ID           	uuid.UUID     	 	`gorm:"type:uuid;primary_key;default:gen_random_uuid()" json:"id"`
+	Title        	string        	 	`gorm:"type:varchar(255);not null" json:"title"`
+	Content      	string        	 	`gorm:"type:text" json:"content"`
+	Version      	int           	 	`gorm:"not null;default:1" json:"version"`
+	IsPublic     	bool          	 	`gorm:"not null;default:false" json:"is_public"`
+	OwnerID      	uuid.UUID     	 	`gorm:"type:uuid;not null" json:"owner_id"`
+	Owner        	userModel.User	 	`gorm:"foreignKey:OwnerID" json:"-"`
+	CreatedAt    	time.Time     	 	`gorm:"not null" json:"created_at"`
+	UpdatedAt    	time.Time     	 	`gorm:"not null" json:"updated_at"`
+	DeletedAt    	gorm.DeletedAt	 	`gorm:"index" json:"-"` // Soft delete
+	Collaborators 	[]Collaborator	 	`gorm:"foreignKey:DocumentID" json:"collaborators,omitempty"`
+	History     	[]DocumentHistory 	`gorm:"foreignKey:DocumentID" json:"-"`
 }
 
 func (d *Document) BeforeCreate(tx *gorm.DB) error {
@@ -72,7 +72,6 @@ type DocumentUpdateRequest struct {
 
 
 
-// DocumentListResponse represents a document in the list view
 type DocumentListResponse struct {
 	ID                uuid.UUID `json:"id"`
 	Title             string    `json:"title"`
