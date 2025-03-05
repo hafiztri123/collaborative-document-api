@@ -1,7 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+set -e  # Exit immediately if a command exits with a non-zero status
 
-# Run database migrations
-go run scripts/migrate.go -up -config ./config
-./scripts/db/setup_db.sh
+echo "Running database migrations..."
+go run ./migrate.go -up
 
+echo "Running database setup script..."
+bash ./setup_db.sh
+
+echo "Starting the application..."
 exec ./out
