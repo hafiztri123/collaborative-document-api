@@ -168,7 +168,6 @@ WHERE
 GROUP BY
     u.id, u.name, u.email;
 
--- Function to record document view
 CREATE OR REPLACE FUNCTION record_document_view(
     doc_id UUID,
     usr_id UUID,
@@ -181,7 +180,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Function to record document edit
 CREATE OR REPLACE FUNCTION record_document_edit(
     doc_id UUID,
     usr_id UUID,

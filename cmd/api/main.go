@@ -25,14 +25,12 @@ func main() {
 		log.Fatalf("Error initializing config: %v", err)
 	}
 
-	// Initialize logger
 	logger, err := initLogger()
 	if err != nil {
 		log.Fatalf("Error initializing logger: %v", err)
 	}
 	defer logger.Sync()
 
-	// Use the global logger
 	zap.ReplaceGlobals(logger)
 
 	// Set Gin mode based on environment
@@ -48,9 +46,9 @@ func main() {
 
 	// Initialize Redis
 	redisClient := redis.NewClient(&redis.Options{
-		Addr:     fmt.Sprintf("%s:%d", viper.GetString("redis.host"), viper.GetInt("redis.port")),
-		Password: viper.GetString("redis.password"),
-		DB:       viper.GetInt("redis.db"),
+		Addr:     fmt.Sprintf("%s:%s", os.Getenv("REDISHOST"), os.Getenv("REDISPORT")),
+		Password: os.Getenv("REDISPASSWORD"),
+		DB:       0,
 	})
 
 	// Test Redis connection
