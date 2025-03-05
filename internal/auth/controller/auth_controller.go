@@ -1,10 +1,12 @@
 package controller
 
 import (
+	"context"
 	"errors"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/google/uuid"
 	"github.com/hafiztri123/document-api/internal/auth/service"
 	"github.com/hafiztri123/document-api/internal/user/model"
 	"go.uber.org/zap"
@@ -15,6 +17,7 @@ type Controller interface {
 	Login(ctx *gin.Context)
 	RefreshToken(ctx *gin.Context)
 	Logout(ctx *gin.Context)
+	GetProfile(ctx *gin.Context)
 }
 
 type authController struct {
@@ -150,4 +153,29 @@ func (ctrl *authController) Logout(ctx *gin.Context) {
 	}
 
 	ctx.Status(http.StatusNoContent)
+}
+
+func (ctrl *authController) GetProfile(ctx *gin.Context) {
+	userID, ok  := ctx.Get("userID")
+	if !ok {
+		ctrl.logger.Error("Error getting userID")
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"code": "not_found",
+			"message": "Failed to get user ID",
+		})
+		return		
+	}
+
+
+	user, err := ctrl.service.GetProfile(context.Background(), userID.(uuid.UUID))
+	if err != nil {
+		ctrl.logger.Error("Error getting profile")
+		ctx.JSON(http.StatusNotFound, gin.H{
+			"code": "not_found",
+			"message": "Failed to get profile",
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, user)
 }

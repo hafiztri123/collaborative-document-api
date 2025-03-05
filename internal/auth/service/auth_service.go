@@ -28,6 +28,7 @@ type Service interface {
 	RefreshToken(ctx context.Context, refreshToken string) (*model.TokenResponse, error)
 	Logout(ctx context.Context, refreshToken string) error
 	ValidateToken(tokenString string) (*Claims, error)
+	GetProfile(ctx context.Context, userID uuid.UUID) (*model.User, error) 
 }
 
 type Claims struct {
@@ -192,6 +193,16 @@ func (s *authService) ValidateToken(tokenString string) (*Claims, error){
 }
 
 
+func (s *authService) GetProfile(ctx context.Context, userID uuid.UUID) (*model.User, error){
+	user, err :=  s.repo.FindUserByID(ctx, userID)
+	if err != nil {
+		return nil, ErrInvalidToken
+	}
+	
+	return user, err
+}
+
+
 func (s *authService) generateTokens(ctx context.Context, user *model.User) (*model.TokenResponse, error) {
 	accessExpiryStr := viper.GetString(config.JWT_ACCESS_TOKEN_EXPIRY)
 	refreshExpiryStr := viper.GetString(config.JWT_REFRESH_TOKEN_EXPIRY)
@@ -255,6 +266,5 @@ func (s *authService) generateTokens(ctx context.Context, user *model.User) (*mo
 		ExpiresIn: int(accessExpiry.Seconds()),
 	}, nil
 
-
-
 }
+

@@ -86,6 +86,7 @@ func SetupRoutes(router *gin.Engine, db *gorm.DB, redisClient *redis.Client, log
 
 		// User analytics
 		protected.GET("/users/me/analytics", docCtrl.GetUserAnalytics)
+		protected.GET("/users/me", authCtrl.GetProfile)
 	}
 
 	// WebSocket endpoint
