@@ -10,6 +10,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	"github.com/hafiztri123/document-api/config"
+	"github.com/hafiztri123/document-api/internal/database"
 	"github.com/spf13/viper"
 )
 
@@ -33,13 +34,12 @@ func main() {
 		log.Fatalf("Error reading config file: %v", err)
 	}
 
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=%s",
-		viper.GetString(config.DB_USERNAME),
-		viper.GetString(config.DB_PASSWORD),
-		viper.GetString(config.DB_HOST),
-		viper.GetInt(config.DB_PORT),
-		viper.GetString(config.DB_NAME),
-		viper.GetString(config.DB_SSL_MODE),
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=required",
+		os.Getenv("PGUSER"),
+        os.Getenv("PGPASSWORD"),   // Railway provides PGPASSWORD for PostgreSQL password
+        os.Getenv("PGHOST"),       // Railway provides PGHOST for PostgreSQL host
+        database.GetEnvAsInt("PGPORT", 5432), // Default port is 5432 if not set
+		os.Getenv("PGDATABASE"),
 	)
 
 	m, err := migrate.New(
