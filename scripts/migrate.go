@@ -9,7 +9,6 @@ import (
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
-	"github.com/hafiztri123/document-api/config"
 	"github.com/hafiztri123/document-api/internal/database"
 	"github.com/spf13/viper"
 )
