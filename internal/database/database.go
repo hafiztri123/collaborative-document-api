@@ -59,9 +59,10 @@ func createGormConfig() *gorm.Config {
 
 func createDataSource() string {
     dsn := fmt.Sprintf(
-        "host=%s port=%d user=%s password=postgres dbname=%s sslmode=require",
+        "host=%s port=%d user=%s password=%s dbname=%s sslmode=require",
         os.Getenv("PGHOST"),       // Railway provides PGHOST for PostgreSQL host
         getEnvAsInt("PGPORT", 5432), // Default port is 5432 if not set
+        os.Getenv("PGUSER"),       // Railway provides PGUSER for PostgreSQL username
         os.Getenv("PGPASSWORD"),   // Railway provides PGPASSWORD for PostgreSQL password
         os.Getenv("PGDATABASE"),   // Railway provides PGDATABASE for PostgreSQL database name
     )
