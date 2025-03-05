@@ -33,7 +33,7 @@ func main() {
 		log.Fatalf("Error reading config file: %v", err)
 	}
 
-	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=required",
+	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s?sslmode=require",
 		os.Getenv("PGUSER"),
         os.Getenv("PGPASSWORD"),   // Railway provides PGPASSWORD for PostgreSQL password
         os.Getenv("PGHOST"),       // Railway provides PGHOST for PostgreSQL host
