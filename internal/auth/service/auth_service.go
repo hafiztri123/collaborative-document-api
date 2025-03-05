@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -114,7 +115,7 @@ func (s *authService) RefreshToken(ctx context.Context, refreshToken string) (*m
 			return nil, fmt.Errorf("[ERROR] unexpected signing method: %v", t.Header["alg"])
 		}
 
-		return []byte(viper.GetString(config.JWT_SECRET)), nil
+		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
 	if err != nil || !token.Valid {
@@ -158,7 +159,7 @@ func (s *authService) Logout(ctx context.Context, refreshToken string) error {
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("[ERROR] unexpected signing method: %v", t.Header["alg"])
 		}
-		return []byte(viper.GetString(config.JWT_SECRET)), nil
+		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
 	if err != nil || !token.Valid {
@@ -180,7 +181,7 @@ func (s *authService) ValidateToken(tokenString string) (*Claims, error){
 		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
 			return nil, fmt.Errorf("[ERROR] unexpected signing method: %v", t.Header["alg"])
 		}
-		return []byte(viper.GetString(config.JWT_SECRET)), nil 
+		return []byte(os.Getenv("JWT_SECRET")), nil 
 	})
 
 	if err != nil || !token.Valid {
@@ -230,7 +231,7 @@ func (s *authService) generateTokens(ctx context.Context, user *model.User) (*mo
 	}
 
 	accessToken := jwt.NewWithClaims(jwt.SigningMethodHS256, accessClaims)
-	accessTokenString, err := accessToken.SignedString([]byte(viper.GetString(config.JWT_SECRET)))
+	accessTokenString, err := accessToken.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
 		s.logger.Error("[ERROR] error signing access token", zap.Error(err))
 		return nil, err
@@ -247,7 +248,7 @@ func (s *authService) generateTokens(ctx context.Context, user *model.User) (*mo
 	}
 
 	refreshToken := jwt.NewWithClaims(jwt.SigningMethodHS256, refreshClaims)
-	refreshTokenString, err := refreshToken.SignedString([]byte(viper.GetString(config.JWT_SECRET)))
+	refreshTokenString, err := refreshToken.SignedString([]byte(os.Getenv("JWT_SECRET")))
 	if err != nil {
 		s.logger.Error("[ERROR] error signing refresh token", zap.Error(err))
 		return nil, err

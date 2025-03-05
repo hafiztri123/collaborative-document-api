@@ -98,3 +98,4 @@ type UserAnalyticsResponse struct {
 	Activity           UserActivityResponse           `json:"activity"`
 	MostActiveDocuments []UserAnalyticsDocumentResponse `json:"most_active_documents"`
 }
+

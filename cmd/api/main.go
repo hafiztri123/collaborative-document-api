@@ -34,7 +34,7 @@ func main() {
 	zap.ReplaceGlobals(logger)
 
 	// Set Gin mode based on environment
-	if viper.GetString("environment") == "production" {
+	if os.Getenv("ENVIRONMENT") == "production" {
 		gin.SetMode(gin.ReleaseMode)
 	}
 
@@ -171,7 +171,7 @@ func initLogger() (*zap.Logger, error) {
 	var logger *zap.Logger
 	var err error
 
-	if viper.GetString("environment") == "production" {
+	if os.Getenv("ENVIRONMENT") == "production" {
 		logger, err = zap.NewProduction()
 	} else {
 		logger, err = zap.NewDevelopment()
