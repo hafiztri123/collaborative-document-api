@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y postgresql-client
 WORKDIR /app
 COPY . .
 
-RUN go build -o main .
+RUN go build -o main ./cmd/api
 
 # Make scripts executable
 RUN chmod +x ./scripts/db/setup_db.sh
