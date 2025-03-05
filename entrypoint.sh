@@ -1,11 +1,11 @@
 #!/bin/bash
-set -e  # Exit immediately if a command exits with a non-zero status
+set -e
 
 echo "Running database migrations..."
-go run ./migrate.go -up
+./migrator -up
 
 echo "Running database setup script..."
-bash ./setup_db.sh
+bash ./scripts/db/setup_db.sh
 
 echo "Starting the application..."
-exec ./out
+exec ./main
